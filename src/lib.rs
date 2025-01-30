@@ -5,12 +5,12 @@
 enum TokenKind {
     LParen,     // (
     RParen,     // )
-    PLUS,       // +
-    MINUS,      // -
-    SLASH,      // /
-    STAR,       // *
-    PESO,       // $
-    BANG,       // !
+    Plus,       // +
+    Minus,      // -
+    Slash,      // /
+    Star,       // *
+    Peso,       // $
+    Bang,       // !
     Ampersand,  // &
     BSlash,     // \
     Colon,      // :

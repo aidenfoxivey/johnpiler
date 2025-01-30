@@ -54,7 +54,7 @@ struct Token {
 }
 
 struct Lexer {
-    source: String,
+    source: Vec<char>,
     column: usize,
     index: usize,
     line: usize,
@@ -63,7 +63,10 @@ struct Lexer {
 impl Lexer {
     pub fn new(input: String) -> Self {
         Self {
-            source: input,
+            source: input.chars().collect(),
+            // I do this here because doing input.chars().nth() everytime I need
+            // to index a character ends up being unperformant since it has to
+            // rebuild the iterator everytime it's called.
             column: 1,
             line: 1,
             index: 0,
@@ -78,7 +81,7 @@ impl Lexer {
         self.source.len() >= self.index
     }
 
-    fn peek() {
-        todo!();
+    fn peek(&self) -> char {
+        self.source.get(self.index).copied().unwrap_or('\0')
     }
 }

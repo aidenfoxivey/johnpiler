@@ -2,6 +2,8 @@ use std::fs::File;
 use std::io::{Read, Write};
 use std::path::Path;
 
+pub mod rope;
+
 const FIXNUM_MASK: u64 = 0b11;
 const FIXNUM_TAG: u64 = 0b00;
 const CHAR_TAG: u64 = 0b00001111;
@@ -54,4 +56,17 @@ fn main() -> std::io::Result<()> {
     output_file.write_all(output.as_bytes())?;
 
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use expect_test::expect;
+
+    #[test]
+    fn create_new_rating() {
+        let actual = 2 + 2;
+        let expected = expect!["4"]; // or expect![["5"]]
+        expected.assert_eq(&actual.to_string())
+    }
 }

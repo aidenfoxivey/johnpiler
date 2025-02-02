@@ -1,6 +1,8 @@
 // For quick access, here's the R5RS Standard.
 // https://conservatory.scheme.org/schemers/Documents/Standards/R5RS/HTML/
 
+use std::char::EscapeDebug;
+
 #[derive(Debug, PartialEq)]
 enum TokenKind {
     LParen,     // (
@@ -107,6 +109,46 @@ impl Lexer {
         };
         self.index += 1;
         Some(token)
+    }
+
+    fn number
+
+    fn string(&mut self) -> Option<Token> {
+        let mut s = String::new();
+        let mut escaped = false;
+        loop {
+            if self.is_at_end() {
+                return None;
+            }
+
+            let c = self.bite();
+
+            if escaped {
+                escaped = false;
+                match c {
+                    'n' => s.push('\n'),
+                    't' => s.push('\t'),
+                    'r' => s.push('\r'),
+                    '\\' => s.push('\\'),
+                    '"' => s.push('"'),
+                    _ => {
+                        return None;
+                    }
+                }
+            } else {
+                match c {
+                    '\"' => {
+                        break;
+                    }
+                    '\\' => {
+                        escaped = true;
+                    }
+                    _ => s.push(c),
+                }
+            }
+        }
+
+        self.make_token(TokenKind::String(s))
     }
 
     fn scan_token(&mut self) -> Option<Token> {

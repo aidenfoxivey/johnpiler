@@ -1,7 +1,7 @@
 // For quick access, here's the R5RS Standard.
 // https://conservatory.scheme.org/schemers/Documents/Standards/R5RS/HTML/
 
-use std::char::EscapeDebug;
+use anyhow::{bail, Result};
 
 #[derive(Debug, PartialEq)]
 enum TokenKind {
@@ -111,7 +111,23 @@ impl Lexer {
         Some(token)
     }
 
-    fn number
+    fn number(&mut self) -> Result<Token> {
+        let mut radix = 10;
+        if self.peek() == '#' {
+            self.bite(); // consume #
+            radix = match self.bite() {
+                'd' => 10,
+                'x' => 16,
+                'o' => 8,
+                'b' => 2,
+                _ => bail!("invalid number radix"),
+            };
+        }
+
+        loop {}
+
+        Ok()
+    }
 
     fn string(&mut self) -> Option<Token> {
         let mut s = String::new();
@@ -122,7 +138,6 @@ impl Lexer {
             }
 
             let c = self.bite();
-
             if escaped {
                 escaped = false;
                 match c {
